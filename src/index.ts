@@ -1,7 +1,8 @@
 import { readFileSync } from 'fs';
-import { Posibilities } from './gamePosibilities'
+import { Posibilities } from './gamePosibilities';
 import { Column } from "./columns";
-import { homedir } from 'os';
+import { FileReader } from "./FileReader";
+import { DataAnalysis } from "./DataAnalysis";
 
 interface Match {
     date: string,
@@ -11,34 +12,6 @@ interface Match {
     awayGoals: number,
     winner: string,
     referee: string
-}
-
-function loadFileContent(url: string): string {
-    return readFileSync(url, {
-        encoding: 'utf-8'
-    })
-};
-
-function parseFileContent(data: string): string [] {
-    return  data.split("\n");
-}
-
-function parseIndividualEntitie(data: string[]): string[][] {
-    return data.map((row: string): string[] => {
-        return row.split(',');
-    })
-}
-
-function parseStringToNumber(data: string[][]): string[][] {
-    for(let i = 0; i < data.length; i++) {
-        for(let j = 3; j < data[i].length; j++) {
-            data[i][j] = parseInt(data[i][j]);
-            if(j == 4) {
-                break;
-            }
-        }
-    }
-    return data
 }
 
 function analysisWinner(data: string[][], winnerTeam: string): any {
@@ -58,15 +31,22 @@ function analysisWinner(data: string[][], winnerTeam: string): any {
             "It's a draw!"
         }
     }
-
+    console.log(1)
     return `${winnerTeam} won ${wins} games!`
 
 }
 
-const url= 'football.csv';
-const data = loadFileContent(url);
-const first_parse = parseFileContent(data);
-const second_parse = parseIndividualEntitie(first_parse);
-const third_parse = parseStringToNumber(second_parse);
-const quar_parse = analysisWinner(third_parse, 'Man United');
-console.log(quar_parse);
+const url = 'football.csv';
+// const data = loadFileContent(url);
+// const first_parse = parseFileContent(data);
+// const second_parse = parseIndividualEntitie(first_parse);
+// const third_parse = parseStringToNumber(second_parse);
+// const quar_parse = analysisWinner(third_parse, 'Man United');
+// console.log(quar_parse);
+
+const fileReader = new FileReader(url);
+const analysis = new DataAnalysis(fileReader);
+console.log(analysis.analysisWinner('Man United'))
+// fileReader.read()
+// fileReader.parseIndividualMatches()
+// console.log(fileReader.getData());
