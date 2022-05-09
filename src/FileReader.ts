@@ -1,12 +1,14 @@
 import { readFileSync } from "fs";
+import { Column } from "./columns";
+import { Posibilities } from "./gamePosibilities";
 
 export class FileReader {
     file: string = '';
     data: string[][] = [];
 
-    constructor(file: string) {
-        this.file = file;
-    }
+    // constructor(file: string) {
+    //     this.file = file;
+    // }
 
     read(): string[] {
         return readFileSync(this.file, {
@@ -23,7 +25,7 @@ export class FileReader {
 
     }
 
-    parseStringToNumber(): string[][] {
+    parseGoalsToNumber(): string[][] {
         for(const element of this.parseIndividualMatches()) {
             for(let j = 3; j < element.length; j++) {
                 element[j] = parseInt(element[j]);
@@ -35,8 +37,10 @@ export class FileReader {
         return this.data;
     }
 
-
+    getData(): string[][] {
+        this.read();
+        this.parseIndividualMatches();
+        this.parseGoalsToNumber();
+        return this.data;
+    }
 }
-
-const fileReader = new FileReader('football.csv');
-console.log(fileReader.parseIndividualMatches());
