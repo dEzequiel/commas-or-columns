@@ -2,7 +2,7 @@ import { readFileSync } from "fs";
 
 export class FileReader {
     file: string = '';
-    data: string[][] | undefined;
+    data: string[][] = [];
 
     constructor(file: string) {
         this.file = file;
@@ -14,7 +14,7 @@ export class FileReader {
         }).split("\n");
     }
 
-    parseIndividualEntitie(): string[][] {
+    parseIndividualMatches(): string[][] {
         this.data = this.read().map((row: string): string[] => {
             return row.split(',');
         })
@@ -23,8 +23,20 @@ export class FileReader {
 
     }
 
-    
+    parseStringToNumber(): string[][] {
+        for(const element of this.parseIndividualMatches()) {
+            for(let j = 3; j < element.length; j++) {
+                element[j] = parseInt(element[j]);
+                if(j == 4) {
+                    break;
+                }
+            }
+        }
+        return this.data;
+    }
+
+
 }
 
 const fileReader = new FileReader('football.csv');
-console.log(fileReader.parseIndividualEntitie());
+console.log(fileReader.parseIndividualMatches());
