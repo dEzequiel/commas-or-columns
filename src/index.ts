@@ -1,7 +1,7 @@
-import { match } from 'assert';
 import { readFileSync } from 'fs';
-import { type } from 'os';
-import { parse } from 'path';
+import { Posibilities } from './gamePosibilities'
+import { Column } from "./columns";
+import { homedir } from 'os';
 
 interface Match {
     date: string,
@@ -45,13 +45,17 @@ function analysisWinner(data: string[][], winnerTeam: string): any {
 
     let wins: number = 0;
 
-    for(var val of data) {
-        if(val[1] == winnerTeam && val[5] == 'H') {
+    for(var match of data) {
+        if(match[Column.HOME_TEAM] == winnerTeam && match[Column.WINNER] === Posibilities.HOME_WIN) {
             wins++;
         }
 
-        if(val[2] == winnerTeam && val[5] == 'A') {
+        if(match[Column.AWAY_TEAM] == winnerTeam && match[Column.WINNER] === Posibilities.AWAY_WIN) {
             wins++;
+        }
+
+        if(match[Column.HOME_TEAM] || match[Column.AWAY_TEAM] == winnerTeam && match[Column.WINNER] == Posibilities.DRAW) {
+            "It's a draw!"
         }
     }
 
@@ -59,10 +63,10 @@ function analysisWinner(data: string[][], winnerTeam: string): any {
 
 }
 
-// const url= 'football.csv';
-// const data = loadFileContent(url);
-// const first_parse = parseFileContent(data);
-// const second_parse = parseIndividualEntitie(first_parse);
-// const third_parse = parseStringToNumber(second_parse);
-// const quar_parse = analysisWinner(third_parse, 'Man United');
-// console.log(quar_parse);
+const url= 'football.csv';
+const data = loadFileContent(url);
+const first_parse = parseFileContent(data);
+const second_parse = parseIndividualEntitie(first_parse);
+const third_parse = parseStringToNumber(second_parse);
+const quar_parse = analysisWinner(third_parse, 'Man United');
+console.log(quar_parse);
