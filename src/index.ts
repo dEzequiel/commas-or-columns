@@ -41,7 +41,23 @@ function parseStringToNumber(data: string[][]): string[][] {
     return data
 }
 
+function analysisWinner(data: string[][], winnerTeam: string): any {
 
+    let wins: number = 0;
+
+    for(var val of data) {
+        if(val[1] == winnerTeam && val[5] == 'H') {
+            wins++;
+        }
+
+        if(val[2] == winnerTeam && val[5] == 'A') {
+            wins++;
+        }
+    }
+
+    return `${winnerTeam} won ${wins} games!`
+
+}
 
 // const url= 'football.csv';
 // const data = loadFileContent(url);
